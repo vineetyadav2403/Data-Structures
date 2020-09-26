@@ -11,12 +11,12 @@ The next N-1 lines represent edges: 2 space separated integers denoting an edge 
 Print a single number i.e. the number of triplets.
 
 # Constraints
-1 ≤ N ≤ 105
+1 ≤ N ≤ 105.
 A node is numbered between 1 to N.
 
 # Sample Input
 
-5
+5.
 1 2 b
 2 3 r
 3 4 r
