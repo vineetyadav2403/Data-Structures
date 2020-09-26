@@ -3,7 +3,7 @@ Kundu is true tree lover. Tree is a connected graph having N vertices and N-1 ed
 
 If the answer is greater than 109 + 7, print the answer modulo (%) 109 + 7.
 
-Input Format
+# Input Format
 The first line contains an integer N, i.e., the number of vertices in tree.
 The next N-1 lines represent edges: 2 space separated integers denoting an edge followed by a color of the edge. A color of an edge is denoted by a small letter of English alphabet, and it can be either red(r) or black(b).
 
