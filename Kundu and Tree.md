@@ -7,24 +7,24 @@ If the answer is greater than 109 + 7, print the answer modulo (%) 109 + 7.
 The first line contains an integer N, i.e., the number of vertices in tree.
 The next N-1 lines represent edges: 2 space separated integers denoting an edge followed by a color of the edge. A color of an edge is denoted by a small letter of English alphabet, and it can be either red(r) or black(b).
 
-Output Format
+# Output Format
 Print a single number i.e. the number of triplets.
 
-Constraints
+# Constraints
 1 ≤ N ≤ 105
 A node is numbered between 1 to N.
 
-Sample Input
+# Sample Input
 
 5
 1 2 b
 2 3 r
 3 4 r
 4 5 b
-Sample Output
+# Sample Output
 
 4
-Explanation
+# Explanation
 
 (2,3,4) is one such triplet because on all paths i.e 2 to 3, 3 to 4 and 2 to 4 there is atleast one edge having red color.
 (2,3,5), (1,3,4) and (1,3,5) are other such triplets.
