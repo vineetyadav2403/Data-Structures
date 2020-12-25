@@ -20,6 +20,7 @@ bool isWord(string s,vector<string>& wordDict){
     }
 
 // Memorization solution
+// top down
 unordered_map<string,bool> mp;
     bool isWord(string s,vector<string>& wordDict){
         for(auto i:wordDict){
