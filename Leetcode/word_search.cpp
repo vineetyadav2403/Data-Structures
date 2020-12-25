@@ -1,5 +1,5 @@
 https://leetcode.com/problems/word-search/
-
+// 79 word search---
 void dfs(vector<vector<char>>& board, string &word,int i,int j,int k,bool &ans){
         int n = board.size();
         if(!ans&&i>=0&&i<n&&j>=0){
