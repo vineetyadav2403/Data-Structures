@@ -1,5 +1,7 @@
 https://leetcode.com/problems/path-sum-iii/
 
+// O(n^2)-----------------------------------
+
 int total = 0;
     void findPath(TreeNode *root,int &sum, int curr){
         if(!root) return;
@@ -19,3 +21,6 @@ int total = 0;
         
         return total;
     }
+
+
+//O(n)--------------
