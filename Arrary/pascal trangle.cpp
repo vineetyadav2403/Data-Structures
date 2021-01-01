@@ -18,3 +18,19 @@ vector<vector<int> > Solution::solve(int A) {
     }
     return ans;
 }
+
+// single row
+
+vector<int> Solution::getRow(int A) {
+    int prev = 1;
+    vector<int> ans;
+    ans.push_back(prev);
+ 
+    for (int i = 1; i <= A; i++) {
+        // nCr = (nCr-1 * (n - r + 1))/r
+        int curr = (prev * (A - i + 1)) / i;
+        ans.push_back(curr);
+        prev = curr;
+    }
+    return ans;
+}
