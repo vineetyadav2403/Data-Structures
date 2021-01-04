@@ -16,3 +16,30 @@ else
   return 0;
  }
 }
+
+
+//********************
+#include<stdio.h>
+#include<math.h>
+#include <stdlib.h>
+
+int main(int argc, char *argv[])
+{
+if(argc==1)
+{
+printf(“No command line argument present, pls add them first”);
+return 0;
+}
+else
+{
+int a, b, c;
+float area,s;
+a=atoi(argv[1]);
+b=atoi(argv[2]);
+c=atoi(argv[3]);
+s=(a+b+c)/3;
+area=sqrt(s*(s-a)*(s-b)*(s-c));
+printf(“Area is %f”,area);
+return 0;
+}
+}
