@@ -1,81 +1,78 @@
-public class Node{
-    public String pageNumber;
-    public String pageContent;
-    public Node prev;
-    public Node next;
-}
+#include <bits/stdc++.h> 
+using namespace std; 
 
-public Class LRUCache{
-    private int size;
-    private int count;
-    private HashMap map;
-    private Node head, tail;
+class LRUCache { 
+	// store keys of cache 
+	list<int> dq; 
 
-    public LRUCache(int size){
-        this.size = size;
-        count = 0;
-        map = new HashMap();
-        head = null;
-        tail = null;
-    }
-    
-    public String getContent(String pageNumber){
-        if(!map.containsKey(pageNumber)){
-            return null;
-        }
-        Node node = map.get(pageNumber);
-        remove(node);
-        attachFirst(node);
-        return node.pageContent;
-    }
-    
-    public void insertContent(String pageNumber, String pageContent){
-        
-        if(map.containsKey(pageNumber)){
-            Node node = map.get(pageNumber);
-            node.pageContent = pagecontent;  //refresh content;
-            remove(node);
-            attachFront(node);
-            map.put(pageNumber, node);
-            return;
-        }
-        count++;
-         Node node = new Node();
-         node.pageNumber = pageNumber; 
-         node.pageContent = pageContent;
-        if(count == 1){
-            node.prev = null;
-            node.next = null;
-            head = node;
-            tail = node;
-            map.put(pageNumber, node);
-            return;
-        }
-        
-        attachFront(node);
-        map.put(pageNumber, node);
-        
-        if(count > size){
-            map.remove(tail.pageNumber);
-            remove(tail);
-            count--;
-        }
-        
-    }
-    
-    private void remove(Node node){
-        if(node.pageNumber == tail.pageNumber){
-            node.prev.next = null;
-            tail = tail.prev;
-            return;
-        } 
-        node.prev.next = node.next;
-        node.next.prev = node.prev;
-    }
-    
-    private void attachFirst(Node node){
-        node.next = head;
-        node.prev = null;
-        head = node;
-    }    
-}    
+	// store references of key in cache 
+	unordered_map<int, list<int>::iterator> ma; 
+	int csize; // maximum capacity of cache 
+
+public: 
+	LRUCache(int); 
+	void refer(int); 
+	void display(); 
+}; 
+
+// Declare the size 
+LRUCache::LRUCache(int n) 
+{ 
+	csize = n; 
+} 
+
+// Refers key x with in the LRU cache 
+void LRUCache::refer(int x) 
+{ 
+	// not present in cache 
+	if (ma.find(x) == ma.end()) { 
+		// cache is full 
+		if (dq.size() == csize) { 
+			// delete least recently used element 
+			int last = dq.back(); 
+
+			// Pops the last elmeent 
+			dq.pop_back(); 
+
+			// Erase the last 
+			ma.erase(last); 
+		} 
+	} 
+
+	// present in cache 
+	else
+		dq.erase(ma[x]); 
+
+	// update reference 
+	dq.push_front(x); 
+	ma[x] = dq.begin(); 
+} 
+
+// Function to display contents of cache 
+void LRUCache::display() 
+{ 
+
+	// Iterate in the deque and print 
+	// all the elements in it 
+	for (auto it = dq.begin(); it != dq.end(); 
+		it++) 
+		cout << (*it) << " "; 
+
+	cout << endl; 
+} 
+
+// Driver Code 
+int main() 
+{ 
+	LRUCache ca(4); 
+
+	ca.refer(1); 
+	ca.refer(2); 
+	ca.refer(3); 
+	ca.refer(1); 
+	ca.refer(4); 
+	ca.refer(5); 
+	ca.display(); 
+
+	return 0; 
+} 
