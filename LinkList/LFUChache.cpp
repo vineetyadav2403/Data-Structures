@@ -1,108 +1,56 @@
-public class LFUCache {
-    private Node head = null;
-    private int cap = 0;
-    private HashMap<Integer, Integer> keyToValue = null;
-    private HashMap<Integer, Node> keyToNode = null;
+class LFUCache {
+public:
+    unordered_map<int, list<int>> freq_keyslist;
+    unordered_map<int, vector<int>> key_value_freq;
+    unordered_map<int, list<int>::iterator> key_iterator;
+    int min_freq;
+    int size;
+    int c;
     
-    public LFUCache(int capacity) {
-        this.cap = capacity;
-        keyToValue = new HashMap<Integer, Integer>();
-        keyToNode = new HashMap<Integer, Node>();
-    }
-    
-    public int get(int key) {
-        if (keyToValue.containsKey(key)) {
-            increaseFrequency(key);
-            return keyToValue.get(key);
-        }
-        return -1;
-    }
-    
-    public void put(int key, int value) {
-        if ( cap == 0 ) return;
-        if (keyToValue.containsKey(key)) {
-            keyToValue.put(key, value);
-            increaseFrequency(key); // updating an already existing key is also seen as accessing the key; 
-                                    // so increase frequency by 1
-        } else {
-            if (keyToValue.size() >= cap) {
-                removeOld(); // purge the least frequently used element
-            }
-            keyToValue.put(key, value);
-            addToHead(key);
-        }
-    }
-    
-    private void addToHead(int key) {
-        if (head == null) {
-            head = new Node(0);
-            head.keys.add(key);
-        } else if (head.frequency > 0) {
-            Node node = new Node(0);
-            node.keys.add(key);
-            node.next = head;
-            head.prev = node;
-            head = node;
-        } else if (head.frequency == 0) {
-            head.keys.add(key);
-        }
-        keyToNode.put(key, head);      
-    }
-    
-    private void increaseFrequency(int key) {
-        Node node = keyToNode.get(key);
-        node.keys.remove(key);
+    LFUCache(int capacity) {
+        c = capacity;
+        size = 0;
+        min_freq = 0;
         
-        if (node.next == null) {
-            node.next = new Node(node.frequency + 1);
-            node.next.prev = node;
-            node.next.keys.add(key);
-        } else if (node.next.frequency == node.frequency + 1) {
-            node.next.keys.add(key);
-        } else {
-            Node tmp = new Node(node.frequency + 1);
-            tmp.keys.add(key);
-            tmp.prev = node;
-            tmp.next = node.next;
-            node.next.prev = tmp;
-            node.next = tmp;
-        }
-
-        keyToNode.put(key, node.next);
-        if (node.keys.size() == 0) remove(node);
     }
     
-    private void removeOld() {
-        if (head == null) return;
-        int old = 0;
-        for (int n: head.keys) {
-            old = n;
-            break;
-        }
-        head.keys.remove(old);
-        if (head.keys.size() == 0) remove(head);
-        keyToNode.remove(old);
-        keyToValue.remove(old);
-    }
-    
-    private void remove(Node node) {
-        if (node.prev == null) {
-            head = node.next;
-        } else {
-            node.prev.next = node.next;
-        } 
-        if (node.next != null) {
-            node.next.prev = node.prev;
-        }
-    }
-    
-    class Node {
-        public int frequency = 0;
-        public LinkedHashSet<Integer> keys = new LinkedHashSet<>();
-        public Node prev = null, next = null;
+    int get(int key) {
+        if(!key_value_freq.count(key)) return -1;
         
-        public Node(int frequency) {
-            this.frequency = frequency;
-        }
+        int value = key_value_freq[key][0];
+        int freq = key_value_freq[key][1];
+        freq_keyslist[freq].erase(key_iterator[key]);
+        
+        freq_keyslist[freq+1].push_back(key);
+        key_value_freq[key][1]++;
+        key_iterator[key] = --freq_keyslist[freq+1].end();
+        
+        if(!freq_keyslist[min_freq].size()) min_freq++;
+        
+        return value;
     }
-}
+    
+    void put(int key, int value) {
+        if(c<=0) return;
+        
+        if(get(key) != -1){
+            key_value_freq[key][0] = value;
+            return;
+        }
+        
+        if(size==c){
+            //remove the element from cache with min freq
+            int key_to_remove = freq_keyslist[min_freq].front();
+            freq_keyslist[min_freq].pop_front();
+            key_value_freq.erase(key_to_remove);
+            key_iterator.erase(key_to_remove);
+        }
+        
+        key_value_freq[key] = {value, 1};
+        freq_keyslist[1].push_back(key);
+        key_iterator[key] = --freq_keyslist[1].end();
+        min_freq=1;
+        if(size < c) size++;
+        
+    }
+};
